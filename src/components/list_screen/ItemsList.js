@@ -12,9 +12,9 @@ class ItemsList extends React.Component {
     }
 
     render() {
-        const todoList = this.props.todoList;
-        const items = todoList.items;
-        // console.log("ItemsList: todoList.id " + todoList.id);
+        const wireframe = this.props.wireframe;
+        const items = wireframe.items;
+        // console.log("ItemsList: wireframe.id " + wireframe.id);
         
         return (
             <div className="todo-lists section">
@@ -29,7 +29,7 @@ class ItemsList extends React.Component {
                     return (
                         <div className = "row">
                             <div className = "col s12">
-                                <ItemCard todoList={todoList} item={item}/>
+                                <ItemCard wireframe={wireframe} item={item}/>
                             </div>
                         </div>
                     );})   
@@ -46,7 +46,7 @@ class ItemsList extends React.Component {
     
         if (this.state.currentItemSortCriteriaDescription === ItemSortCriteria.SORT_BY_TASK_INCREASING) {
             this.setState({currentItemSortCriteriaDescription: ItemSortCriteria.SORT_BY_TASK_DECREASING})
-            this.props.todoList.items.sort(function (itemA, itemB) {
+            this.props.wireframe.items.sort(function (itemA, itemB) {
                 var item1 = itemA.description.toUpperCase();
                 var item2 = itemB.description.toUpperCase();
                 if (item1 < item2) {return -1;}
@@ -57,7 +57,7 @@ class ItemsList extends React.Component {
     
         else {
             this.setState({currentItemSortCriteriaDescription: ItemSortCriteria.SORT_BY_TASK_INCREASING})
-            this.props.todoList.items.sort(function (itemA, itemB) {
+            this.props.wireframe.items.sort(function (itemA, itemB) {
                     var item1 = itemA.description.toUpperCase();
                     var item2 = itemB.description.toUpperCase();
                     if (item1 < item2) {return 1;}
@@ -73,7 +73,7 @@ class ItemsList extends React.Component {
     
         if (this.state.currentItemSortCriteriaDueDate === ItemSortCriteria.SORT_BY_DUE_DATE_INCREASING) {
             this.setState({currentItemSortCriteriaDueDate: ItemSortCriteria.SORT_BY_DUE_DATE_DECREASING})
-            this.props.todoList.items.sort(function (itemA, itemB) {
+            this.props.wireframe.items.sort(function (itemA, itemB) {
                 var item1 = itemA.due_date.toUpperCase();
                 var item2 = itemB.due_date.toUpperCase();
                 if (item1 < item2) {return -1;}
@@ -84,7 +84,7 @@ class ItemsList extends React.Component {
     
         else {
             this.setState({currentItemSortCriteriaDueDate: ItemSortCriteria.SORT_BY_DUE_DATE_INCREASING})
-            this.props.todoList.items.sort(function (itemA, itemB) {
+            this.props.wireframe.items.sort(function (itemA, itemB) {
                     var item1 = itemA.due_date.toUpperCase();
                     var item2 = itemB.due_date.toUpperCase();
                     if (item1 < item2) {return 1;}
@@ -100,7 +100,7 @@ class ItemsList extends React.Component {
     
         if (this.state.currentItemSortCriteriaStatus === ItemSortCriteria.SORT_BY_STATUS_INCREASING) {
             this.setState({currentItemSortCriteriaStatus: ItemSortCriteria.SORT_BY_STATUS_DECREASING})
-            this.props.todoList.items.sort(function (itemA, itemB) {
+            this.props.wireframe.items.sort(function (itemA, itemB) {
                 if (itemA.completed < itemB.completed) {return -1;}
                 if (itemA.completed > itemB.completed) {return 1;}
                 return 0;
@@ -109,7 +109,7 @@ class ItemsList extends React.Component {
     
         else {
             this.setState({currentItemSortCriteriaStatus: ItemSortCriteria.SORT_BY_STATUS_INCREASING})
-            this.props.todoList.items.sort(function (itemA, itemB) {
+            this.props.wireframe.items.sort(function (itemA, itemB) {
                     if (itemA.completed < itemB.completed) {return 1;}
                     if (itemA.completed > itemB.completed) {return -1;}
                     return 0;
@@ -129,9 +129,9 @@ const ItemSortCriteria = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const todoList = ownProps.todoList;
+    const wireframe = ownProps.wireframe;
     return {
-        todoList,
+        wireframe,
         auth: state.firebase.auth,
     };
 };
@@ -139,6 +139,6 @@ const mapStateToProps = (state, ownProps) => {
 export default compose(
     connect(mapStateToProps),
     firestoreConnect([
-        { collection: 'todoLists'},
+        { collection: 'wireframes'},
     ]),
 )(ItemsList);

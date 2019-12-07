@@ -6,10 +6,10 @@ import { thisExpression } from '@babel/types';
 
 class ItemScreen extends Component {
     state = {
-        new_description: this.props.location.state.todoList.items[this.props.location.state.key].description,
-        new_assigned_to: this.props.location.state.todoList.items[this.props.location.state.key].assigned_to,
-        new_due_date: this.props.location.state.todoList.items[this.props.location.state.key].due_date,
-        new_completed: this.props.location.state.todoList.items[this.props.location.state.key].completed,
+        new_description: this.props.location.state.wireframe.items[this.props.location.state.key].description,
+        new_assigned_to: this.props.location.state.wireframe.items[this.props.location.state.key].assigned_to,
+        new_due_date: this.props.location.state.wireframe.items[this.props.location.state.key].due_date,
+        new_completed: this.props.location.state.wireframe.items[this.props.location.state.key].completed,
     }
 
     onChange = (e) => {
@@ -30,7 +30,7 @@ class ItemScreen extends Component {
     }
 
     submitEdit = () => {
-        var newList = this.props.location.state.todoList;
+        var newList = this.props.location.state.wireframe;
         const newItem = {
             "key": this.props.location.state.key,
             "description": this.state.new_description,
@@ -42,7 +42,7 @@ class ItemScreen extends Component {
         newList.items[this.props.location.state.key] = newItem;
         const firestore = getFirestore();
         
-        firestore.collection('todoLists').doc(this.props.location.state.todoList.id).update({
+        firestore.collection('wireframes').doc(this.props.location.state.wireframe.id).update({
             items: newList.items
         });
 
@@ -55,7 +55,7 @@ class ItemScreen extends Component {
             {isChecked = "checked"}
 
         const key = this.props.location.state.key;
-        const item = this.props.location.state.todoList.items[key];
+        const item = this.props.location.state.wireframe.items[key];
 
         return (
             <div className="container white row itemscreen">

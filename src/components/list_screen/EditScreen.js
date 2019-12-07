@@ -9,7 +9,7 @@ import { getFirestore } from 'redux-firestore';
 
 import { Link } from 'react-router-dom';
 
-class ListScreen extends Component {
+class EditScreen extends Component {
     state = {
         name: '',
         owner: '',
@@ -27,7 +27,7 @@ class ListScreen extends Component {
     updateName = (e) => {
         const { target } = e;
         const firestore = getFirestore();
-        firestore.collection('todoLists').doc(this.props.todoList.id).update({
+        firestore.collection('wireframes').doc(this.props.wireframe.id).update({
             name: target.value,
             timestamp: Date.now(),
         });
@@ -36,7 +36,7 @@ class ListScreen extends Component {
     updateOwner = (e) => {
         const { target } = e;
         const firestore = getFirestore();
-        firestore.collection('todoLists').doc(this.props.todoList.id).update({
+        firestore.collection('wireframes').doc(this.props.wireframe.id).update({
             owner: target.value,
             timestamp: Date.now(),
         });
@@ -45,7 +45,7 @@ class ListScreen extends Component {
     deleteList = () => {
         console.log("DELETE");
         const firestore = getFirestore();
-        firestore.collection('todoLists').doc(this.props.todoList.id).delete();
+        firestore.collection('wireframes').doc(this.props.wireframe.id).delete();
     }
 
     // removeFooter = () => {
@@ -57,12 +57,12 @@ class ListScreen extends Component {
     render() {
         
         const auth = this.props.auth;
-        const todoList = this.props.todoList;
+        const wireframe = this.props.wireframe;
         if (!auth.uid) {
             return <Redirect to="/" />;
         }
 
-        if(!todoList)
+        if(!wireframe)
 	        return <React.Fragment />
 
         const trashTrigger = 
@@ -71,7 +71,7 @@ class ListScreen extends Component {
         </Button>   
 
         return (
-            <div className="container white row listscreen">
+            <div className="container white row editscreen">
                 <div className="grey-text text-darken-3 light-green lighten-2 center-align border">
                     <h1>Todo List
                     <div className = "right-align">
@@ -90,18 +90,18 @@ class ListScreen extends Component {
                 
                 <div className="input-field col s6">
                     <label htmlFor="email"><p>Name</p></label>
-                    <input className="active" type="text" name="name" id="name" onChange={this.handleChange.bind(this)} onKeyUp = {this.updateName.bind(this)} defaultValue={todoList.name} />
+                    <input className="active" type="text" name="name" id="name" onChange={this.handleChange.bind(this)} onKeyUp = {this.updateName.bind(this)} defaultValue={wireframe.name} />
                 </div>
                 <div className="input-field col s6">
                     <label htmlFor="password"><p>Owner</p></label>
-                    <input className="active" type="text" name="owner" id="owner" onChange={this.handleChange.bind(this)} onKeyUp = {this.updateOwner.bind(this)} defaultValue={todoList.owner} />
+                    <input className="active" type="text" name="owner" id="owner" onChange={this.handleChange.bind(this)} onKeyUp = {this.updateOwner.bind(this)} defaultValue={wireframe.owner} />
                 </div>
                 
-                <ItemsList todoList={todoList} />
+                <ItemsList wireframe={wireframe} />
 
                 <p className = "center-align">
-                    <Link to={{pathname: "/todoList/" + this.props.todoList.id + "/" + (this.props.todoList.items.length) + "/add", 
-                            state: {todoList: this.props.todoList, key: this.props.todoList.items.length}}} className="brand-logo">
+                    <Link to={{pathname: "/wireframe/" + this.props.wireframe.id + "/" + (this.props.wireframe.items.length) + "/add", 
+                            state: {wireframe: this.props.wireframe, key: this.props.wireframe.items.length}}} className="brand-logo">
                         <a className="btn-floating btn-large waves-effect waves-light center-align light-green lighten-3 hoverable">
                             <i className="material-icons">add</i>
                         </a>
@@ -114,14 +114,14 @@ class ListScreen extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const { id } = ownProps.match.params;
-  const { todoLists } = state.firestore.data;
-  const todoList = todoLists ? todoLists[id] : null;
-//   todoList.id = id;
-if(todoList)
-	todoList.id = id;
+  const { wireframes } = state.firestore.data;
+  const wireframe = wireframes ? wireframes[id] : null;
+//   wireframe.id = id;
+if(wireframe)
+	wireframe.id = id;
 
   return {
-    todoList,
+    wireframe,
     auth: state.firebase.auth,
   };
 };
@@ -129,6 +129,6 @@ if(todoList)
 export default compose(
   connect(mapStateToProps),
   firestoreConnect([
-    { collection: 'todoLists' },
+    { collection: 'wireframes' },
   ]),
-)(ListScreen);
+)(EditScreen);

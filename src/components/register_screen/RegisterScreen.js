@@ -39,8 +39,8 @@ class RegisterScreen extends Component {
     }
 
     return (
-      <div className="container">
-        <form onSubmit={this.handleSubmit} className="white">
+      <div className="container row">
+        <form onSubmit={this.handleSubmit} className="col s4 white">
           <h5 className="grey-text text-darken-3">Register</h5>
           <div className="input-field">
             <label htmlFor="email">Email</label>
@@ -63,6 +63,11 @@ class RegisterScreen extends Component {
             {authError ? <div className="red-text center"><p>{authError}</p></div> : null}
           </div>
         </form>
+
+        <div className="col s8 banner">
+              Wireframer<sup>TM</sup><br />
+              <br></br>
+          </div>
       </div>
     );
   }

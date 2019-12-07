@@ -5,7 +5,7 @@ import { getFirestore } from 'redux-firestore';
 
 class ItemCard extends React.Component {
     state = {
-        itemList: this.props.todoList.items,
+        itemList: this.props.wireframe.items,
     }
     
     render() {
@@ -19,13 +19,13 @@ class ItemCard extends React.Component {
         var deleteItemButton = "red hoverable";
         if (item.key == 0)
             {moveItemUpButton = "disabled"}
-        if (item.key == this.props.todoList.items.length-1)
+        if (item.key == this.props.wireframe.items.length-1)
             {moveItemDownButton = "disabled"}
 
         return (
-           <Link to ={{pathname: "/todoList/" + this.props.todoList.id + "/" + item.key, state: {todoList: this.props.todoList, key: item.key}}}>
+           <Link to ={{pathname: "/wireframe/" + this.props.wireframe.id + "/" + item.key, state: {wireframe: this.props.wireframe, key: item.key}}}>
 
-            <div className="card z-depth-0 todo-list-link pink-lighten-3">
+            <div className="card z-depth-0 pink-lighten-3">
                 <div className="card-content grey-text text-darken-3 row hoverable">
                     
                     <div className = "col s3 left-align">
@@ -75,7 +75,7 @@ class ItemCard extends React.Component {
         if (this.props.item.key <= 0) // If item is at top of list
             {return;}
         
-        var list = this.props.todoList;
+        var list = this.props.wireframe;
         var item1 = list.items[this.props.item.key];
         var item2 = list.items[this.props.item.key - 1];
         var key1 = item1.key;
@@ -90,7 +90,7 @@ class ItemCard extends React.Component {
             {delete item.id}
 
         const firestore = getFirestore();
-        firestore.collection("todoLists").doc(this.props.todoList.id).update({
+        firestore.collection("wireframes").doc(this.props.wireframe.id).update({
             items: list.items
         });
     }
@@ -100,10 +100,10 @@ class ItemCard extends React.Component {
         // e.stopPropagation();
         console.log("MOVING ITEM DOWN");
 
-        if (this.props.item.key >= this.props.todoList.items.length - 1) // If item is at bottom of list
+        if (this.props.item.key >= this.props.wireframe.items.length - 1) // If item is at bottom of list
             {return;}
 
-        var list = this.props.todoList;
+        var list = this.props.wireframe;
         var item1 = list.items[this.props.item.key];
         var item2 = list.items[this.props.item.key + 1];
         var key1 = item1.key;
@@ -118,7 +118,7 @@ class ItemCard extends React.Component {
             {delete item.id}
 
         const firestore = getFirestore();
-        firestore.collection("todoLists").doc(this.props.todoList.id).update({
+        firestore.collection("wireframes").doc(this.props.wireframe.id).update({
             items: list.items
         });
     }
@@ -129,7 +129,7 @@ class ItemCard extends React.Component {
         console.log("DELETING ITEM");
 
         let key = this.props.item.key;
-        let newList = this.props.todoList;
+        let newList = this.props.wireframe;
         newList.items.splice(key, 1);
         newList.items.map(item => {
             if (item.key > key)
@@ -137,7 +137,7 @@ class ItemCard extends React.Component {
         });
 
         const firestore = getFirestore();
-        firestore.collection("todoLists").doc(this.props.todoList.id).update({
+        firestore.collection("wireframes").doc(this.props.wireframe.id).update({
             items: newList.items
         });
     }

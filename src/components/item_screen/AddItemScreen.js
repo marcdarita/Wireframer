@@ -29,7 +29,7 @@ class AddItemScreen extends Component {
     }
 
     addItem = () => {
-        var newList = this.props.location.state.todoList;
+        var newList = this.props.location.state.wireframe;
         const newItem = {
             "key": this.props.location.state.key,
             "description": this.state.new_description,
@@ -41,7 +41,7 @@ class AddItemScreen extends Component {
         const firestore = getFirestore();
 
         newList.items[this.props.location.state.key] = newItem;
-        firestore.collection('todoLists').doc(this.props.location.state.todoList.id).update({
+        firestore.collection('wireframes').doc(this.props.location.state.wireframe.id).update({
             items: newList.items
         });
 
