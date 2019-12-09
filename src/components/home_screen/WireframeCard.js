@@ -1,10 +1,14 @@
 import React from 'react';
+import { getFirestore } from 'redux-firestore';
+import { firestoreConnect } from 'react-redux-firebase';
+
 
 class WireframeCard extends React.Component {
 
     render() {
 
         const { wireframe } = this.props;
+        
         // console.log("WireframeCard, wireframe.id: " + wireframe.id);
         return (
             <div className = "grey-text text-darken-3 grey lighten-2 hoverable row">
@@ -18,6 +22,8 @@ class WireframeCard extends React.Component {
         e.preventDefault();
         e.stopPropagation();
         console.log("Deleting Wireframe");
+        const firestore = getFirestore();
+        firestore.collection('wireframes').doc(this.props.wireframe.id).delete();
     }
 }
 export default WireframeCard;

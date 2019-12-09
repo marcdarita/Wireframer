@@ -48,6 +48,10 @@ class EditScreen extends Component {
         firestore.collection('wireframes').doc(this.props.wireframe.id).delete();
     }
 
+    doSomething = () => {
+        console.log("Something");
+    }
+
     // removeFooter = () => {
     //     var element = document.getElementsByClassName("modal-footer")[0];
     //     if (element)
@@ -65,48 +69,71 @@ class EditScreen extends Component {
         if(!wireframe)
 	        return <React.Fragment />
 
-        const trashTrigger = 
-        <Button className = "waves-effect waves-light btn-flat btn-floating btn-large center-align light-green lighten-3">
-            <i class="material-icons">delete</i>
-        </Button>   
+        // const trashTrigger = 
+        // <Button className = "waves-effect waves-light btn-flat btn-floating btn-large center-align light-green lighten-3">
+        //     <i class="material-icons">delete</i>
+        // </Button>   
 
         return (
-            <div className="container white row editscreen">
-                <div className="grey-text text-darken-3 light-green lighten-2 center-align border">
-                    <h1>Todo List
-                    <div className = "right-align">
-                        <Modal header="Delete List?" trigger={trashTrigger} className = "border">
-                            <h5><strong>Are you sure you want to delete this list?</strong></h5>
-                            <Link to="/">
-                            <a onClick = {this.deleteList.bind(this)} class="waves-effect waves-light btn light-green lighten-2">Yes</a></Link>
-                            &nbsp;&nbsp;&nbsp;
-                            <a class="waves-effect waves-light btn light-green lighten-2 modal-close">No</a>
-                            
-                            <footer> <h6>Note: The list will not be retreivable.</h6></footer>
-                        </Modal>
-                        </div>
-                        </h1>
-                </div>
-                
-                <div className="input-field col s6">
-                    <label htmlFor="email"><p>Name</p></label>
-                    <input className="active" type="text" name="name" id="name" onChange={this.handleChange.bind(this)} onKeyUp = {this.updateName.bind(this)} defaultValue={wireframe.name} />
-                </div>
-                <div className="input-field col s6">
-                    <label htmlFor="password"><p>Owner</p></label>
-                    <input className="active" type="text" name="owner" id="owner" onChange={this.handleChange.bind(this)} onKeyUp = {this.updateOwner.bind(this)} defaultValue={wireframe.owner} />
-                </div>
-                
-                <ItemsList wireframe={wireframe} />
+            <div className = "row editscreen">
+                <div className = "col s3 controlpanel">
+                    <div className = "row subpanel">
+                        <span className = "col s4">
+                            <i class="material-icons small">zoom_in</i>
+                            &nbsp;
+                            <i class="material-icons small">zoom_out</i>
+                        </span>
+                        <span className = "col s8">
+                            <a class="waves-effect waves-grey btn-flat button">Save</a>
+                            &nbsp;&nbsp;
+                            <a class="waves-effect waves-grey btn-flat button">Close</a>
+                        </span>
+                    </div>
 
-                <p className = "center-align">
-                    <Link to={{pathname: "/wireframe/" + this.props.wireframe.id + "/" + (this.props.wireframe.items.length) + "/add", 
-                            state: {wireframe: this.props.wireframe, key: this.props.wireframe.items.length}}} className="brand-logo">
-                        <a className="btn-floating btn-large waves-effect waves-light center-align light-green lighten-3 hoverable">
-                            <i className="material-icons">add</i>
-                        </a>
-                    </Link>
-                </p>
+                    <div className = "center-align buttonI grey lighten-2 hoverable" onClick = {this.doSomething}>
+                        <i class="material-icons large">crop_landscape</i>
+                        <br></br>
+                        <span className = "tag"><b>Container</b></span>
+                        {/* <h5>Container</h5> */}
+                    </div>
+
+                    <br></br>
+                    <br></br>
+
+                    <div className = "center-align buttonI grey lighten-2 hoverable" onClick = {this.doSomething}>
+                        <span className = "tag">Prompt for input:</span>
+                        <br></br>
+                        <span className = "tag"><b>Label</b></span>
+                    </div>
+
+                    <br></br>
+                    <br></br>
+
+                    <div className = "center-align buttonI grey lighten-2 hoverable" onClick = {this.doSomething}>
+                        <p></p>
+                        <a class="waves-effect waves-grey btn-flat button">Submit</a>
+                        <br></br>
+                        <span className = "tag"><b>Button</b></span>
+                    </div>
+
+                    <br></br>
+                    <br></br>
+
+                    <div className = "center-align buttonI grey lighten-2 hoverable" onClick = {this.doSomething}>
+                        <p></p>
+                    <i class="material-icons medium">format_shapes</i>
+                        {/* <input type = "text" placeholder = "Input" style = {{width: 100}} disabled></input> */}
+                        <br></br>
+                        <span className = "tag"><b>Textfield</b></span>
+                    </div>
+                    <p></p>
+                </div>
+                <div className = " col s6 diagram">
+                    <h1>Diagram</h1>
+                </div>
+                <div className = "col s3 controlpanel">
+                    <h1>Hello</h1>
+                </div>
             </div>
         );
     }
