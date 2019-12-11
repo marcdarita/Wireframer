@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import ItemCard from './ItemCard';
+import ControlerProps from './ControlerProps';
 import { firestoreConnect } from 'react-redux-firebase';
 
 class ItemsList extends React.Component {
@@ -29,7 +29,7 @@ class ItemsList extends React.Component {
                     return (
                         <div className = "row">
                             <div className = "col s12">
-                                <ItemCard wireframe={wireframe} item={item}/>
+                                <ControlerProps wireframe={wireframe} item={item}/>
                             </div>
                         </div>
                     );})   

@@ -8,6 +8,7 @@ import { getFirestore } from 'redux-firestore';
 class WireframeLinks extends React.Component {
     render() {
         const wireframes = this.props.wireframes;
+        console.log(wireframes);
         return (
             <div className="todo-lists section">
                 {wireframes && wireframes.map(wireframe => (
