@@ -48,6 +48,10 @@ div.banner {
   border-style: groove;
 }
 
+.diagram {
+  overflow: scroll;
+}
+
 .controlpanel {
   /* border-radius: 40px; */
   border: #111111;
@@ -62,6 +66,14 @@ div.banner {
 }
 
 .button {
+  border: #111111;
+  border-style: solid;
+  border-width: 2px;
+  margin: 1px;
+  width: 80px;
+}
+
+.buttonDisplay {
   border: #111111;
   border-style: solid;
   border-width: 2px;
@@ -98,6 +110,14 @@ div.banner {
   top: 0;
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  animation-name: animatetop;
+  animation-duration: 0.7s
+}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
 }
 
 /* Modal Content/Box */
@@ -124,7 +144,23 @@ div.banner {
   cursor: pointer;
 }
 
+.fromright {
+  animation-name: animateright;
+  animation-duration: 0.7s
+}
+
+.container {
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+}
+
 @keyframes animatetop {
   from {top: -300px; opacity: 0}
   to {top: 0; opacity: 1}
+}
+
+@keyframes animateright {
+  from {right: -300px; opacity: 0}
+  to {right: 0; opacity: 1}
 }

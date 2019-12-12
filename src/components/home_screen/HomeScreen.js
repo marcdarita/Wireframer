@@ -52,7 +52,7 @@ class HomeScreen extends Component {
         fireStore.collection('wireframes').add({
             name: "Unknown",
             owner: "Unknown",
-            components: [],
+            controls: [],
             timestamp: Date.now()
         })
 
