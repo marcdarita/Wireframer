@@ -8,10 +8,11 @@ import { getFirestore } from 'redux-firestore';
 class WireframeLinks extends React.Component {
     render() {
         const wireframes = this.props.wireframes;
+        const userid = this.props.auth.uid;
         console.log(wireframes);
         return (
-            <div className="todo-lists section">
-                {wireframes && wireframes.map(wireframe => (
+            <div className="section">
+                {wireframes && wireframes.filter(wireframe => wireframe.ownerid == userid).map(wireframe => (
                     <Link to={'/wireframe/' + wireframe.id} key={wireframe.id}>
                         <div onClick = {() => {this.updateTimeStamp(wireframe)}}><WireframeCard wireframe={wireframe}/></div>
                     </Link>

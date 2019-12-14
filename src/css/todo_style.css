@@ -50,6 +50,13 @@ div.banner {
 
 .diagram {
   overflow: scroll;
+  border-style: dashed;
+  border-color: #111111;
+  border-width: 1px;
+}
+
+.workspace {
+  overflow: scroll;
 }
 
 .selectedcontrol {
@@ -112,6 +119,10 @@ div.banner {
 
 .shorttext {
   font-size: 12px;
+}
+
+.smalltext {
+  font-size: 10px;
 }
 
 .cursor {

@@ -40,6 +40,7 @@ class HomeScreen extends Component {
                         </div>
                     </div>
                 </div>
+
             </div>
         );
     }
@@ -53,7 +54,8 @@ class HomeScreen extends Component {
             name: "Unknown",
             owner: "Unknown",
             controls: [],
-            timestamp: Date.now()
+            timestamp: Date.now(),
+            ownerid: this.props.auth.uid,
         })
 
         // return <Redirect to="/login"/>;
