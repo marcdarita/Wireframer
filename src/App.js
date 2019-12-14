@@ -14,6 +14,7 @@ import AddItemScreen from './components/item_screen/AddItemScreen.js';
 import DatabaseTester from './test/DatabaseTester'
 
 class App extends Component {
+  
   render() {
     const { auth } = this.props;
 
@@ -29,8 +30,8 @@ class App extends Component {
               <Route path="/databaseTester" component={DatabaseTester} />
               <Route path="/register" component={RegisterScreen} />
               <Route path="/login" component={LoginScreen} />
-              <Route path="/wireframe/:id/:key/add" component={AddItemScreen} />
-              <Route path="/wireframe/:id/:key" component={ItemScreen} />
+              {/* <Route path="/wireframe/:id/:key/add" component={AddItemScreen} /> */}
+              {/* <Route path="/wireframe/:id/:key" component={ItemScreen} /> */}
               <Route path="/wireframe/:id" component={EditScreen} />
               <Route path="/:any" component={HomeScreen} />
               

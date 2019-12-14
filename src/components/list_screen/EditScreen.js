@@ -5,16 +5,16 @@ import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import {Modal, Button} from 'react-materialize';
 import { getFirestore } from 'redux-firestore';
-import ControlerProps from './ControlerProps';
-import LabelProps from './LabelProps';
-import ButtonProps from './ButtonProps';
-import TextfieldProps from './TextfieldProps';
-import Diagram from './Diagram';
 import ControlCard from './ControlCard';
 import { Link } from 'react-router-dom';
 import Draggable from 'react-draggable';
 import { SketchPicker } from 'react-color';
 import { Swatches } from 'react-color';
+import ResizableRect from 'react-resizable-rotatable-draggable'
+import ResizableBox from 'react-resizable-box'
+import Resizable from 'react-resizable'
+import {Rnd} from 'react-rnd'
+
 
 class EditScreen extends Component {
     state = {
@@ -31,9 +31,12 @@ class EditScreen extends Component {
             border_color: "N/A",
             border_width: 2,
             border_radius: 0,
+            x_coord: 0,
+            y_coord: 0,
         },
-        controls: [],
+        controls: this.props.wireframe.controls,
         focusColor: "",
+        saved: true,
     }
 
     updateName = (e) => {
@@ -52,12 +55,6 @@ class EditScreen extends Component {
             owner: target.value,
             timestamp: Date.now(),
         });
-    }
-
-    deleteList = () => {
-        console.log("DELETE");
-        const firestore = getFirestore();
-        firestore.collection('wireframes').doc(this.props.wireframe.id).delete();
     }
 
     switchToContainer = () => {
@@ -84,6 +81,8 @@ class EditScreen extends Component {
             border_color: "#000000",
             border_width: 2,
             border_radius: 0,
+            x_coord: 0,
+            y_coord: 0,
         }
 
         this.setState({focusedControl: newContainer});
@@ -94,6 +93,8 @@ class EditScreen extends Component {
         firestore.collection('wireframes').doc(this.props.wireframe.id).update({
             controls: newControls
         });
+
+        this.setState({saved: false}) // Implies that changes have been made
     }
     addLabel = () => {
         var newLabel = {
@@ -106,6 +107,8 @@ class EditScreen extends Component {
             border_color: "#ffffff",
             border_width: 2,
             border_radius: 0,
+            x_coord: 0,
+            y_coord: 0,
         }
 
         this.setState({focusedControl: newLabel});
@@ -116,6 +119,8 @@ class EditScreen extends Component {
         firestore.collection('wireframes').doc(this.props.wireframe.id).update({
             controls: newControls
         });
+
+        this.setState({saved: false}) // Implies that changes have been made
     }
     addButton = () => {
         var newButton = {
@@ -128,6 +133,8 @@ class EditScreen extends Component {
             border_color: "#000000",
             border_width: 2,
             border_radius: 0,
+            x_coord: 0,
+            y_coord: 0,
         }
 
         this.setState({focusedControl: newButton});
@@ -138,6 +145,8 @@ class EditScreen extends Component {
         firestore.collection('wireframes').doc(this.props.wireframe.id).update({
             controls: newControls
         });
+
+        this.setState({saved: false}) // Implies that changes have been made
     }
     addTextfield = () => {
         var newTextField = {
@@ -150,6 +159,8 @@ class EditScreen extends Component {
             border_color: "#000000",
             border_width: 2,
             border_radius: 0,
+            x_coord: 0,
+            y_coord: 0,
         }
 
         this.setState({focusedControl: newTextField});
@@ -160,13 +171,38 @@ class EditScreen extends Component {
         firestore.collection('wireframes').doc(this.props.wireframe.id).update({
             controls: newControls
         });
+
+        this.setState({saved: false}) // Implies that changes have been made
     }
 
     updateControlFocus = (c) => {
-        // console.log(c);
-        // console.log(c.control_name)\
         this.setState({focusedControl: c});
+        console.log("Control Focus changed:");
+    }
+    removeFocus = () => {
         
+        var newFocusedControl = {
+            control_name: "",
+            height: 50,
+            width: 50,
+            text: "",
+            font_size: 14,
+            background_color: "N/A",
+            border_color: "N/A",
+            border_width: 2,
+            border_radius: 0,
+            x_coord: 0,
+            y_coord: 0,
+        }
+
+        // console.log(this.state.focusedControl)
+        // console.log(newFocusedControl)
+        if (this.state.focusedControl == newFocusedControl)
+            {this.setState({focusedControl: newFocusedControl});}
+        else 
+            {return;}
+
+        console.log("Focus removed");
     }
 
     updateDiagramDimensions = () => {
@@ -176,6 +212,8 @@ class EditScreen extends Component {
         var element = document.getElementById("diagram");
         element.style.height = height + "px";
         element.style.width = width + "px";
+
+        this.setState({saved: false}) // Implies that changes have been made
     }
 
     saveModal = () => {
@@ -185,9 +223,20 @@ class EditScreen extends Component {
         firestore.collection('wireframes').doc(this.props.wireframe.id).update({
             controls: this.props.wireframe.controls
         })
+
+        this.setState({saved: true}) // Has been saved. Safe to exit
+    }
+    closeSaveModal = () => {
+        document.getElementById("saveModal").style.display = "none";
     }
     closeModal = () => {
-        document.getElementById("saveModal").style.display = "none";
+        if (this.state.saved == false)
+            {document.getElementById("closeModal").style.display = "block";}
+        else 
+            {return <Redirect to ="/"/>}
+    }
+    closeCloseModal = () => {
+        document.getElementById("closeModal").style.display = "none";
     }
 
     openBGColorPicker = () => {
@@ -207,6 +256,8 @@ class EditScreen extends Component {
             border_color: this.state.focusedControl.border_color,
             border_width: this.state.focusedControl.border_width,
             border_radius: this.state.focusedControl.border_radius,
+            x_coord: this.state.focusedControl.x_coord,
+            y_coord: this.state.focusedControl.y_coord,
         }
 
         let newControls = this.props.wireframe.controls;
@@ -215,8 +266,9 @@ class EditScreen extends Component {
 
         this.setState({focusedControl: updatedControl})
         document.getElementById("bgColorPicker").style.display = "none";
-    }   
 
+        this.setState({saved: false}) // Implies that changes have been made
+    }   
     openBCColorPicker = () => {
         document.getElementById("bcColorPicker").style.display = "block";
     }
@@ -234,6 +286,8 @@ class EditScreen extends Component {
             border_color: this.state.focusColor,
             border_width: this.state.focusedControl.border_width,
             border_radius: this.state.focusedControl.border_radius,
+            x_coord: this.state.focusedControl.x_coord,
+            y_coord: this.state.focusedControl.y_coord,
         }
 
         let newControls = this.props.wireframe.controls;
@@ -243,9 +297,8 @@ class EditScreen extends Component {
         this.setState({focusedControl: updatedControl})
         document.getElementById("bcColorPicker").style.display = "none";
 
-
+        this.setState({saved: false}) // Implies that changes have been made
     }
-
     updateFocusColor = (color) => {
         this.setState({focusColor: color.hex});
     }
@@ -264,6 +317,8 @@ class EditScreen extends Component {
             border_color: this.state.focusedControl.border_color,
             border_width: this.state.focusedControl.border_width,
             border_radius: this.state.focusedControl.border_radius,
+            x_coord: this.state.focusedControl.x_coord,
+            y_coord: this.state.focusedControl.y_coord,
         }
 
         let newControls = this.props.wireframe.controls;
@@ -271,15 +326,9 @@ class EditScreen extends Component {
         newControls[index] = updatedControl;
 
         this.setState({focusedControl: updatedControl});
-        
-        // const { target } = e;
 
-        // this.setState(state => ({
-        //     ...state,
-        //     [target.id]: target.value,
-        // }));
+        this.setState({saved: false}) // Implies that changes have been made
     }
-
     handleFSChange = (e) => {
         const {target} = e;
 
@@ -293,6 +342,8 @@ class EditScreen extends Component {
             border_color: this.state.focusedControl.border_color,
             border_width: this.state.focusedControl.border_width,
             border_radius: this.state.focusedControl.border_radius,
+            x_coord: this.state.focusedControl.x_coord,
+            y_coord: this.state.focusedControl.y_coord,
         }
 
         let newControls = this.props.wireframe.controls;
@@ -300,8 +351,9 @@ class EditScreen extends Component {
         newControls[index] = updatedControl;
 
         this.setState({focusedControl: updatedControl});
-    }
 
+        this.setState({saved: false}) // Implies that changes have been made
+    }
     handleBWidthChange = (e) =>{
         const {target} = e;
 
@@ -315,6 +367,8 @@ class EditScreen extends Component {
             border_color: this.state.focusedControl.border_color,
             border_width: target.value,
             border_radius: this.state.focusedControl.border_radius,
+            x_coord: this.state.focusedControl.x_coord,
+            y_coord: this.state.focusedControl.y_coord,
         }
 
         let newControls = this.props.wireframe.controls;
@@ -322,8 +376,9 @@ class EditScreen extends Component {
         newControls[index] = updatedControl;
 
         this.setState({focusedControl: updatedControl});
-    }
 
+        this.setState({saved: false}) // Implies that changes have been made
+    }
     handleBRadiusChange = (e) => {
         const {target} = e;
 
@@ -337,6 +392,8 @@ class EditScreen extends Component {
             border_color: this.state.focusedControl.border_color,
             border_width: this.state.focusedControl.border_width,
             border_radius: target.value,
+            x_coord: this.state.focusedControl.x_coord,
+            y_coord: this.state.focusedControl.y_coord,
         }
 
         let newControls = this.props.wireframe.controls;
@@ -344,14 +401,43 @@ class EditScreen extends Component {
         newControls[index] = updatedControl;
 
         this.setState({focusedControl: updatedControl});
+
+        this.setState({saved: false}) // Implies that changes have been made
+    }
+
+    handleDrag = (e, ui) => {
+        console.log("DRAGGED TO: " + ui.x + ", " + ui.y);
+
+        var updatedControl = {
+            control_name: this.state.focusedControl.control_name,
+            height: this.state.focusedControl.height,
+            width: this.state.focusedControl.width,
+            text: this.state.focusedControl.text,
+            font_size: this.state.focusedControl.font_size,
+            background_color: this.state.focusedControl.background_color,
+            border_color: this.state.focusedControl.border_color,
+            border_width: this.state.focusedControl.border_width,
+            border_radius: this.state.focusedControl.border_radius,
+            x_coord: ui.x,
+            y_coord: ui.y,
+        }
+
+        let newControls = this.props.wireframe.controls;
+        let index = newControls.indexOf(this.state.focusedControl);
+        newControls[index] = updatedControl;
+
+        this.setState({focusedControl: updatedControl});
+
+        this.setState({saved: false}) // Implies that changes have been made
     }
 
     handleChange = () => {
+        // const { target } = e;
 
-    }
-
-    updateText = () => {
-        
+        // this.setState(state => ({
+        //     ...state,
+        //     [target.id]: target.value,
+        // }));
     }
 
     zoomIn = () => {
@@ -370,9 +456,64 @@ class EditScreen extends Component {
         workshop.style.transform = newScale;
     }
 
-    render() {
+    onKeyPressed = () => {
+        console.log("Pressed");
+    }
+
+    checkDisabled = () => {
+        var height = document.getElementById("dimHeight")
+        var width = document.getElementById("dimWidth")
+
+        if (height.value === "" | width.value === "")
+            {document.getElementById("updateDim").disabled = true;}
+        else
+            {document.getElementById("updateDim").disabled = false;}
+    }
+
+    handleResize = (style, isShiftKey, type) => {
+        // type is a string and it shows which resize-handler you clicked
+        // e.g. if you clicked top-right handler, then type is 'tr'
+        // let { top, left, width, height } = style
+        // top = Math.round(top)
+        // left = Math.round(left)
+        // width = Math.round(width)
+        // height = Math.round(height)
         
-        console.log(this.state.focusedControl)
+        // var updatedControl = {
+        //     control_name: this.state.focusedControl.control_name,
+        //     height: height,
+        //     width: width,
+        //     text: this.state.focusedControl.text,
+        //     font_size: this.state.focusedControl.font_size,
+        //     background_color: this.state.focusedControl.background_color,
+        //     border_color: this.state.focusedControl.border_color,
+        //     border_width: this.state.focusedControl.border_width,
+        //     border_radius: this.state.focusedControl.border_radius,
+        //     x_coord: this.state.focusedControl.x_coord,
+        //     y_coord: this.state.focusedControl.y_coord,
+        // }
+
+        // let newControls = this.props.wireframe.controls;
+        // let index = newControls.indexOf(this.state.focusedControl);
+        // newControls[index] = updatedControl;
+
+        // this.setState({focusedControl: updatedControl});
+
+        // this.setState({
+        //   top,
+        //   left,
+        //   width,
+        //   height
+        // })
+        console.log("Resize");
+      }
+
+    render() {
+
+        var preventBackspace = require('prevent-backspace')
+        preventBackspace()
+        
+        // console.log(this.state.focusedControl)
 
         const auth = this.props.auth;
         const wireframe = this.props.wireframe;
@@ -393,21 +534,37 @@ class EditScreen extends Component {
 
                     <div className = "row subpanel">
                         <span className = "col s4">
-                            <i class="material-icons small" onClick = {this.zoomIn}>zoom_in</i>
+                            <i class="material-icons small cursor" onClick = {this.zoomIn}>zoom_in</i>
                             
-                            <i class="material-icons small" onClick = {this.zoomOut}>zoom_out</i>
+                            <i class="material-icons small cursor" onClick = {this.zoomOut}>zoom_out</i>
                         </span>
                         <span className = "col s8">
-                            <a class="waves-effect waves-grey btn-flat button modal-trigger btn-small" onClick={this.saveModal}>Save</a>
+                            <a class="waves-effect waves-grey btn-flat button modal-trigger btn-small" 
+                                onClick = {this.saveModal}><center>Save</center></a>
                             &nbsp;
-                            <a class="waves-effect waves-grey btn-flat button btn-small"><center>Close</center></a>
+                            <Link to = {this.state.saved ? "/" : "/wireframe/" + this.props.wireframe.id}>
+                            <a class="waves-effect waves-grey btn-flat button btn-small"
+                                onClick = {this.closeModal}
+                                ><center>Close</center></a>
+                            </Link>
                         </span>
                     </div>
 
                     <div id="saveModal" class="modal">
                         <div class="modal-content">
-                            <span class="close" onClick = {this.closeModal}>&times;</span>
+                            <span class="close" onClick = {this.closeSaveModal}>&times;</span>
                             <p>Your diagram has been saved!</p>
+                        </div>
+                    </div>
+
+                    <div id="closeModal" class="modal">
+                        <div class="modal-content">
+                            <p>Exit without saving?</p>
+                            <br></br>
+                            <Link to = "/">
+                            <button>Yes</button>&nbsp;
+                            </Link>
+                            <button onClick = {this.closeCloseModal}>No</button>
                         </div>
                     </div>
 
@@ -454,32 +611,47 @@ class EditScreen extends Component {
 
 
                 <div className = " col s6 diagram" id = "diagram">
-                    <div id="workshop"> 
+                    <div id="workshop" onClick = {this.removeFocus}> 
                         {controls && controls.map(control => (
-                                <Draggable>
-                                    <div onClick = {() => {this.updateControlFocus(control)}}>
-                                        <ControlCard control={control} />
+                            // <div onClick = {() => {this.updateControlFocus(control)}}>
+                            // <ControlCard control={control} currentFocus={this.state.focusedControl}/>
+                            // </div>
+                               
+
+                                    // <div onClick = {() => {this.updateControlFocus(control)}}>
+                                    //     <ControlCard control={control} currentFocus={this.state.focusedControl}/>
+                                    // </div>
+
+
+                                    // <Rnd
+                                        // size = {{ width: control.width,  height: control.height }}
+                                        // position = {{ x: control.x_coord, y: control.y_coord }}
+                                        // onDragStop = {this.handleDrag}
+                                        // onResize = {this.handleResize}>
+                                    // </Rnd>
+
+                                    
+                                    // <Resizable
+                                    //     width={control.width}
+                                    //     height={control.height}
+                                    //     onResizeStop = {this.handleResize}>
+                                            
+                                    // </Resizable>
+                                    
+
+                                <Draggable onStop = {this.handleDrag} 
+                                    defaultPosition = {{x: control.x_coord, y: control.y_coord}}>
+                                    <div 
+                                        onClick = {() => {this.updateControlFocus(control)}} 
+                                        onKeyUp = {this.onKeyPressed}
+                                        style = {{height: control.height, width: control.width}}>
+                                        <ControlCard control={control} currentFocus={this.state.focusedControl}/>
                                     </div>
                                 </Draggable>
                         ))}
                     </div>
                     {/* <Diagram wireframe = {wireframe}></Diagram> */}
                 </div>
-
-                {/* <div className = " col s6 diagram" id = "diagram">
-                {controls && controls.map(function(control) {
-                    control.key = controls.indexOf(control);
-                    return (
-                        <Draggable>
-                            <div onClick = {() => {this.updateControlFocus(control)}}>
-                                <ControlCard control={control} />
-                            </div>
-                        </Draggable>
-                )})} */}
-                    {/* <Diagram wireframe = {wireframe}></Diagram> */}
-                {/* </div> */}
-
-
 
                 <div className = "col s3 controlpanel">
 
@@ -572,13 +744,18 @@ class EditScreen extends Component {
                             <center><h5>Diagram Dimensions</h5></center>
 
                             Height: &nbsp;
-                            <input type = "text" id = "dimHeight" style = {{width: 50}}></input>
+                            <input type = "text" id = "dimHeight" style = {{width: 50}} onKeyUp = {this.checkDisabled}></input>
                             Width: &nbsp;
-                            <input type = "text" id = "dimWidth" style = {{width: 50}}></input>
+                            <input type = "text" id = "dimWidth" style = {{width: 50}} onKeyUp = {this.checkDisabled}></input>
 
                             <br></br>
 
-                            <center><button className = "center-align" onClick={this.updateDiagramDimensions}>Update</button></center>
+                            <center>
+                                <button className = "center-align" id = "updateDim" 
+                                        onClick={this.updateDiagramDimensions}>
+                                            Update
+                                </button>
+                            </center>
                             
                             <br></br>
 

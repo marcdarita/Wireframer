@@ -52,6 +52,11 @@ div.banner {
   overflow: scroll;
 }
 
+.selectedcontrol {
+  resize: both;
+  overflow: hidden;
+}
+
 .controlpanel {
   /* border-radius: 40px; */
   border: #111111;
@@ -87,6 +92,12 @@ div.banner {
   border-radius: 20px;
 }
 
+.selectedborder {
+   border-style: double;
+   border-color: red;
+   border-width: 3px;
+}
+
 .buttonI {
   cursor: pointer;
   border-style: ridge;
@@ -101,6 +112,10 @@ div.banner {
 
 .shorttext {
   font-size: 12px;
+}
+
+.cursor {
+  cursor: pointer;
 }
 
 .modal {
