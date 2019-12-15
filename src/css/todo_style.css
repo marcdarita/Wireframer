@@ -64,6 +64,59 @@ div.banner {
   overflow: hidden;
 }
 
+.TR {
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  background-color: aqua;
+  border: solid;
+  border-color: blueviolet;
+  border-width: 2px;
+  border-radius: 10px;
+  top: -5px;
+  right: -5px;
+}
+.BR {
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  background-color: aqua;
+  border: solid;
+  border-color: blueviolet;
+  border-width: 2px;
+  border-radius: 10px;
+  bottom: -5px;
+  right: -5px;
+}
+.BL {
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  background-color: aqua;
+  border: solid;
+  border-color: blueviolet;
+  border-width: 2px;
+  border-radius: 10px;
+  bottom: -5px;
+  left: -5px;
+}
+.TL {
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  background-color: aqua;
+  border: solid;
+  border-color: blueviolet;
+  border-width: 2px;
+  border-radius: 10px;
+  top: -5px;
+  left: -5px;
+}
+
+.disabledcustom {
+  opacity: 0.1;
+  cursor: not-allowed;
+}
 .controlpanel {
   /* border-radius: 40px; */
   border: #111111;

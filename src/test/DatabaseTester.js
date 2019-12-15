@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import todoJson from './TestData.json'
+import wireframeJson from './TestData.json'
 import { getFirestore } from 'redux-firestore';
+import { Link } from 'react-router-dom';
 
 class DatabaseTester extends React.Component {
 
@@ -20,12 +21,15 @@ class DatabaseTester extends React.Component {
 
     handleReset = () => {
         const fireStore = getFirestore();
-        todoJson.wireframes.forEach(todoListJson => {
+        wireframeJson.wireframes.forEach(wireframeData => {
             fireStore.collection('wireframes').add({
-                    name: todoListJson.name,
-                    owner: todoListJson.owner,
-                    items: todoListJson.items,
-                    timestamp: todoListJson.timestamp
+                    name: wireframeData.name,
+                    owner: wireframeData.owner,
+                    controls: wireframeData.controls,
+                    timestamp: wireframeData.timestamp,
+                    diagramheight: wireframeData.diagramheight,
+                    diagramwidth: wireframeData.diagramwidth,
+                    ownerid: wireframeData.ownerid,
                 }).then(() => {
                     console.log("DATABASE RESET");
                 }).catch((err) => {
@@ -39,6 +43,9 @@ class DatabaseTester extends React.Component {
             <div>
                 <button onClick={this.handleClear}>Clear Database</button>
                 <button onClick={this.handleReset}>Reset Database</button>
+                <Link to = "/">
+                    <button>Go Home</button>
+                </Link>
             </div>)
     }
 }

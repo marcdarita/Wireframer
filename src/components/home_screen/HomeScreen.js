@@ -5,7 +5,7 @@ import { NavLink, Redirect } from 'react-router-dom';
 import { firestoreConnect } from 'react-redux-firebase';
 import WireframeLinks from './WireframeLinks'
 import { getFirestore } from 'redux-firestore';
-// import {Link, RichText, Date} from 'prismic-reactjs';
+import { Link } from 'react-router-dom';
 
 class HomeScreen extends Component {
 
@@ -37,6 +37,12 @@ class HomeScreen extends Component {
                                 <button className="home_new_list_button border cursor" onClick={this.handleNewWireframe}>
                                     Create New Wireframe
                                 </button>
+                                <br></br>
+                                <br></br>
+                                <span>Database Tester: &nbsp;</span>
+                                <Link to ="/databaseTester">
+                                    <button>Tester</button>
+                                </Link>
                         </div>
                     </div>
                 </div>

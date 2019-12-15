@@ -182,8 +182,6 @@ class EditScreen extends Component {
     updateControlFocus = (c, e) => { // c is control, e is event
         e.stopPropagation();
         this.setState({focusedControl: c});
-        // document.getElementById("duplicate").disabled = false;
-        // document.getElementById("delete").disabled = false;
 
         document.body.addEventListener("keydown", this.onKeyPressed);
     }
@@ -207,8 +205,6 @@ class EditScreen extends Component {
 
         if (this.state.focusedControl != newFocusedControl) {
             this.setState({focusedControl: newFocusedControl});
-            // document.getElementById("duplicate").disabled = true;
-            // document.getElementById("delete").disabled = true;
         }
         else 
             {return;}
@@ -236,7 +232,7 @@ class EditScreen extends Component {
             controls: this.props.wireframe.controls,
             diagramheight: this.state.diagramheight,
             diagramwidth: this.state.diagramwidth
-        })
+        });
 
         this.setState({saved: true}) // Has been saved. Safe to exit
     }
@@ -491,37 +487,6 @@ class EditScreen extends Component {
         this.setState({saved: false}) // Implies that changes have been made
     }
 
-    handleDrag = (e, ui) => {
-        console.log("DRAGGED TO: " + ui.x + ", " + ui.y);
-
-        // const { target } = e;
-
-        // console.log(target.style)
-
-        var updatedControl = {
-            control_name: this.state.focusedControl.control_name,
-            height: this.state.focusedControl.height,
-            width: this.state.focusedControl.width,
-            text: this.state.focusedControl.text,
-            font_size: this.state.focusedControl.font_size,
-            font_color: this.state.focusedControl.font_color,
-            background_color: this.state.focusedControl.background_color,
-            border_color: this.state.focusedControl.border_color,
-            border_width: this.state.focusedControl.border_width,
-            border_radius: this.state.focusedControl.border_radius,
-            x_coord: ui.x,
-            y_coord: ui.y,
-        }
-
-        let newControls = this.props.wireframe.controls;
-        let index = newControls.indexOf(this.state.focusedControl);
-        newControls[index] = updatedControl;
-
-        this.setState({focusedControl: updatedControl});
-
-        this.setState({saved: false}) // Implies that changes have been made
-    }
-
     handleChange = () => {
         // const { target } = e;
 
@@ -534,9 +499,15 @@ class EditScreen extends Component {
     zoomIn = () => {
         let workspace = document.getElementById("workspace");
         workspace.style.transform = "scale(2)";
+        // document.getElementById("zoomout").style.opacity = 1;
+        // document.getElementById("zoomout").style.cursor = "pointer";
+        document.getElementById("zoomout").disabled = false;
     }
     zoomOut = () => {
         let workspace = document.getElementById("workspace");
+        let originalHeight = workspace.height;
+        let originalWidth = workspace.width;
+
         let scale = workspace.style.transform;
         let index = scale.indexOf("(");
         let index2 = scale.indexOf(")");
@@ -545,6 +516,12 @@ class EditScreen extends Component {
         scale = scale - 1;
         let newScale = "scale(" + scale + ")";
         workspace.style.transform = newScale;
+
+        if (originalHeight === this.state.height && originalWidth === this.state.width) {
+            // document.getElementById("zoomout").style.opacity = 0.1;
+            // document.getElementById("zoomout").style.cursor = "not-allowed";
+            document.getElementById("zoomout").disabled = true;
+        }
     }
 
     deleteControl = () => {
@@ -579,8 +556,8 @@ class EditScreen extends Component {
             border_color: this.state.focusedControl.border_color,
             border_width: this.state.focusedControl.border_width,
             border_radius: this.state.focusedControl.border_radius,
-            x_coord: this.state.focusedControl.x_coord + 100,
-            y_coord: this.state.focusedControl.y_coord + 100,
+            x_coord: this.state.focusedControl.x_coord + 10,
+            y_coord: this.state.focusedControl.y_coord + 10,
         }
 
         let newControls = this.props.wireframe.controls;
@@ -592,12 +569,16 @@ class EditScreen extends Component {
     }
 
     onKeyPressed = (e) => {
-        e.preventDefault();
+        e.stopPropagation();
 
-        if (e.key === 'd' && e.ctrlKey === true)
-            {this.duplicateControl()}
-        if (e.key === 'Backspace')
-            {this.deleteControl()}
+        if (e.key === 'd' && e.ctrlKey === true) {
+            e.preventDefault();
+            this.duplicateControl();
+        }
+        if (e.key === 'Backspace' && window.event.target.tagName !== "INPUT") {
+            e.preventDefault();
+            this.deleteControl();
+        }
     }
 
     checkDisabled = () => {
@@ -629,19 +610,49 @@ class EditScreen extends Component {
         }
     }
 
-    handleResize = (style, isShiftKey, type) => {
-        // type is a string and it shows which resize-handler you clicked
-        // e.g. if you clicked top-right handler, then type is 'tr'
-        let { top, left, width, height } = style
-        top = Math.round(top)
-        left = Math.round(left)
-        width = Math.round(width)
-        height = Math.round(height)
-        
+    handleDrag = (e, ui) => {
+        console.log("DRAGGED: " + ui.deltaX + ", " + ui.deltaY);
+
+        const { target } = e;
+        console.log(target)
+
+        // console.log(target.style)
+
+        console.log(target.style.transform)
+
         var updatedControl = {
             control_name: this.state.focusedControl.control_name,
-            height: height,
-            width: width,
+            height: this.state.focusedControl.height,
+            width: this.state.focusedControl.width,
+            text: this.state.focusedControl.text,
+            font_size: this.state.focusedControl.font_size,
+            font_color: this.state.focusedControl.font_color,
+            background_color: this.state.focusedControl.background_color,
+            border_color: this.state.focusedControl.border_color,
+            border_width: this.state.focusedControl.border_width,
+            border_radius: this.state.focusedControl.border_radius,
+            x_coord: this.state.focusedControl.x_coord + ui.deltaX,
+            y_coord: this.state.focusedControl.y_coord + ui.deltaY,
+        }
+
+        let newControls = this.props.wireframe.controls;
+        let index = newControls.indexOf(this.state.focusedControl);
+        newControls[index] = updatedControl;
+
+        this.setState({focusedControl: updatedControl});
+
+        this.setState({saved: false}) // Implies that changes have been made
+    }
+
+    handleResize = (direction, styleSize, clientSize, delta, newPos) => {
+        
+        var heightChange = Math.round(delta.height * 0.25);
+        var widthChange = Math.round(delta.width * 0.25);
+
+        var updatedControl = {
+            control_name: this.state.focusedControl.control_name,
+            height: this.state.focusedControl.height + heightChange,
+            width: this.state.focusColor.width + widthChange,
             text: this.state.focusedControl.text,
             font_size: this.state.focusedControl.font_size,
             background_color: this.state.focusedControl.background_color,
@@ -658,20 +669,19 @@ class EditScreen extends Component {
 
         this.setState({focusedControl: updatedControl});
 
-        // this.setState({
-        //   top,
-        //   left,
-        //   width,
-        //   height
-        // })
         console.log("Resize");
       }
 
-      handleDrag2 = () => {
+      handleDrag2 = (e, ui) => {
           console.log("Dragged");
+          console.log(ui.deltaX);
       }
-      handleResize2 = () => {
+      handleResize2 = (direction, styleSize, clientSize, delta, newPos) => {
           console.log("Resize");
+          console.log(Math.round(delta.width * .25))
+          console.log(delta.width)
+          console.log(delta.height)
+          console.log(direction)
       }
     render() {
 
@@ -746,7 +756,6 @@ class EditScreen extends Component {
                     <div className = "center-align buttonI grey lighten-2 hoverable" onClick = {this.addTextfield}>
                         <p></p>
                     <i class="material-icons medium">format_shapes</i>
-                        {/* <input type = "text" placeholder = "Input" style = {{width: 100}} disabled></input> */}
                         <br></br>
                         <span className = "tag"><b>Textfield</b></span>
                         <p></p>
@@ -758,8 +767,13 @@ class EditScreen extends Component {
                 <div className = "col s6">
                     <div className = "col s12 controlpanel">
                         <span className = "col s6">
-                            <i class="material-icons small cursor" onClick = {this.zoomIn}>zoom_in</i>   
-                            <i class="material-icons small cursor" onClick = {this.zoomOut}>zoom_out</i>
+                            <button id = "zoomin">
+                            <i class="material-icons small cursor" id = "zoomin" onClick = {this.zoomIn}>zoom_in</i>
+                            </button>  
+                            &nbsp; 
+                            <button id = "zoomout">
+                            <i class="material-icons small cursor" id = "zoomout" onClick = {this.zoomOut}>zoom_out</i>
+                            </button>
                         </span>
                         <span className = "col s6">
                             <a class="waves-effect waves-grey btn-flat button modal-trigger btn-small"
@@ -795,59 +809,17 @@ class EditScreen extends Component {
                     <div id="workspace" className = "col s12" onClick = {this.removeFocus}
                         style = {{width: this.props.wireframe.diagramwidth + "px", height: this.props.wireframe.diagramheight + "px"}}> 
                         {controls && controls.map(control => (
-                            // <div onClick = {() => {this.updateControlFocus(control)}}>
-                            // <ControlCard control={control} currentFocus={this.state.focusedControl}/>
-                            // </div>
-                               
 
-                                    // <div onClick = {() => {this.updateControlFocus(control)}}>
-                                    //     <ControlCard control={control} currentFocus={this.state.focusedControl}/>
-                                    // </div>
-
-                                    // <Rnd 
-                                    //     style = {{height: control.height, width: control.width, left: control.x_coord, top: control.x_coord}}
-                                    //     // size = {{ width: control.width,  height: control.height }}
-                                    //     // position = {{ x: control.x_coord, y: control.y_coord}}
-                                    //     default = {{ x: control.x_coord, y: control.y_coord, width: control.width, height: control.height }}
-                                    //     onDragStop = {this.handleDrag2}
-                                    //     onResizeStop = {this.handleResize}
-                                    //     onClick = {this.updateControlFocus.bind(this, control)}
-                                    //     // style = {{height: control.height, width: control.width}}
-                                    //     >
-                                    //         <ControlCard control={control} currentFocus={this.state.focusedControl}/>
-                                    // </Rnd>
-
-                                    // <Rnd
-                                    // style = {{height: control.height, width: control.width, fontSize: parseInt(control.font_size), color: control.font_color,
-                                    //     backgroundColor: control.background_color, borderColor: control.border_color, 
-                                    //     borderWidth: parseInt(control.border_width), borderRadius: parseInt(control.border_radius)}}>
-                                    //         {control.text}
-                                    //     </Rnd>
-
-                                    <Rnd bounds = "parent" onResize = {this.handleResize}
-                                        style = {{border: "#111111", borderWidth: "2px", borderStyle: "solid", height: control.height, width: control.width}}>
-                                            <ControlCard control={control} currentFocus={this.state.focusedControl}/>
-                                    </Rnd>
-                                    
-                                    // <Resizable
-                                    //     width={control.width}
-                                    //     height={control.height}
-                                    //     onResizeStop = {this.handleResize}>
-                                            
-                                    // </Resizable>
-                                    
-
-                                // <Draggable onStop = {this.handleDrag} 
-                                //     defaultPosition = {{x: control.x_coord, y: control.y_coord}}>
-                                //     <div 
-                                //         onClick = {this.updateControlFocus.bind(this, control)} 
-                                //         style = {{height: control.height, width: control.width}}>
-                                //         <ControlCard control={control} currentFocus={this.state.focusedControl}/>
-                                //     </div>
-                                // </Draggable>
+                                <Draggable onDrag = {this.handleDrag}
+                                    defaultPosition = {{x: control.x_coord, y: control.y_coord}}>
+                                    <div 
+                                        onClick = {this.updateControlFocus.bind(this, control)} 
+                                        style = {{height: control.height, width: control.width}}>
+                                        <ControlCard control={control} currentFocus={this.state.focusedControl}/>
+                                    </div>
+                                </Draggable>
                         ))}
                     </div>
-                    {/* <Diagram wireframe = {wireframe}></Diagram> */}
                 </div>
                 </div>
 
@@ -855,11 +827,10 @@ class EditScreen extends Component {
 
                     <div className = "left-align">
                         <h5 className = "center-align">Properties</h5>
-
-                        {/* <center>
-                            <button className = "col s6" id = "duplicate" onClick = {this.duplicateControl}>Duplicate</button>
-                            <button className = "col s6" id = "delete" onClick = {this.deleteControl}>Delete</button>
-                        </center> */}
+                            {/* <div className = "">
+                            <button className = "col s6" onClick = {this.duplicateControl}>Duplicate</button>
+                            <button className = "col s6" onClick = {this.deleteControl}>Delete</button>
+                            </div> */}
                         
                             <label>Text Prompt:</label>
                             <input type = "text" 
@@ -976,7 +947,9 @@ class EditScreen extends Component {
                                         onClick={this.updateDiagramDimensions}>
                                             Update
                                 </button>
+                                
                             </center>
+
 
                         </div>
                     </div>

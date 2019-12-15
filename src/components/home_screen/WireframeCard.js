@@ -38,6 +38,7 @@ class WireframeCard extends React.Component {
         e.preventDefault();
         e.stopPropagation();
         console.log("Deleting Wireframe");
+        console.log(this.props.wireframe.id)
         const firestore = getFirestore();
         firestore.collection('wireframes').doc(this.props.wireframe.id).delete();
     }
@@ -49,6 +50,7 @@ class WireframeCard extends React.Component {
     }
 
     openDeleteModal = (e) => {
+        console.log(this.props.wireframe.id)
         e.preventDefault();
         e.stopPropagation();
         document.getElementById("deleteModal").style.display = "block";
