@@ -58,7 +58,7 @@ class ControlCard extends React.Component {
         if (control.control_name === "Container"  && control === currentFocus) {
             return (
                 <div className = "container selectedcontrol" 
-                    style = {{height: control.height, width: control.width, fontSize: parseInt(control.font_size),
+                    style = {{height: control.height, width: control.width, fontSize: parseInt(control.font_size), color: control.font_color,
                         backgroundColor: control.background_color, borderColor: control.border_color, 
                         borderWidth: parseInt(control.border_width), borderRadius: parseInt(control.border_radius)}}>
                         
@@ -70,7 +70,7 @@ class ControlCard extends React.Component {
         else if (control.control_name === "Container") {
             return (
                 <div className = "container" 
-                    style = {{height: control.height, width: control.width, fontSize: parseInt(control.font_size),
+                    style = {{height: control.height, width: control.width, fontSize: parseInt(control.font_size), color: control.font_color,
                         backgroundColor: control.background_color, borderColor: control.border_color, 
                         borderWidth: parseInt(control.border_width), borderRadius: parseInt(control.border_radius)}}>
 
@@ -86,7 +86,7 @@ class ControlCard extends React.Component {
                 <div>
                     
                     <label 
-                        style = {{height: control.height, width: control.width, fontSize: parseInt(control.font_size),
+                        style = {{height: control.height, width: control.width, fontSize: parseInt(control.font_size), color: control.font_color,
                             backgroundColor: control.background_color, borderColor: control.border_color, 
                             borderWidth: parseInt(control.border_width), borderRadius: parseInt(control.border_radius)}}>
 
@@ -101,7 +101,7 @@ class ControlCard extends React.Component {
             return (
                 <div>
                     <button className = "button" 
-                        style = {{height: control.height, width: control.width, fontSize: parseInt(control.font_size),
+                        style = {{height: control.height, width: control.width, fontSize: parseInt(control.font_size), color: control.font_color,
                             backgroundColor: control.background_color, borderColor: control.border_color, 
                             borderWidth: parseInt(control.border_width), borderRadius: parseInt(control.border_radius)}}>
                                 
@@ -115,7 +115,7 @@ class ControlCard extends React.Component {
             return (
                 <div>
                     <input type = "text" 
-                        style = {{height: control.height, width: control.width, fontSize: parseInt(control.font_size),
+                        style = {{height: control.height, width: control.width, fontSize: parseInt(control.font_size), color: control.font_color,
                             backgroundColor: control.background_color, borderColor: control.border_color, 
                             borderWidth: parseInt(control.border_width), borderRadius: parseInt(control.border_radius)}}
                         value = {control.text}>         
