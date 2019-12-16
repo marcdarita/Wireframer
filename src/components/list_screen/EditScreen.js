@@ -568,6 +568,43 @@ class EditScreen extends Component {
         this.setState({saved: false}) // Implies that changes have been made
     }
 
+    resizeControl = () => {
+        console.log("Resize");
+
+        var height = document.getElementById("ctrlHeight").value;
+        var width = document.getElementById("ctrlWidth").value;
+        console.log("Updating control dimensions: " + height + ", " + width);
+
+        var updatedControl = {
+            control_name: this.state.focusedControl.control_name,
+            height: height + "px",
+            width: width + "px",
+            text: this.state.focusedControl.text,
+            font_size: this.state.focusedControl.font_size,
+            font_color: this.state.focusedControl.font_color,
+            background_color: this.state.focusedControl.background_color,
+            border_color: this.state.focusedControl.border_color,
+            border_width: this.state.focusedControl.border_width,
+            border_radius: this.state.focusedControl.border_radius,
+            x_coord: this.state.focusedControl.x_coord,
+            y_coord: this.state.focusedControl.y_coord,
+        }
+
+        let newControls = this.props.wireframe.controls;
+        let index = newControls.indexOf(this.state.focusedControl);
+        newControls[index] = updatedControl;
+
+        this.setState({focusedControl: updatedControl});
+        // var element = document.getElementById("workspace");
+        // element.style.height = height + "px";
+        // element.style.width = width + "px";
+
+        // this.setState({diagramheight: height});
+        // this.setState({diagramwidth: width});
+
+        this.setState({saved: false}); // Implies that changes have been made
+    }
+
     onKeyPressed = (e) => {
         e.stopPropagation();
 
@@ -581,6 +618,34 @@ class EditScreen extends Component {
         }
     }
 
+    checkDisabledHW = () => {
+        var height = document.getElementById("ctrlHeight").value
+        var width = document.getElementById("ctrlWidth").value
+
+        if (height === "" | width === "") // Checks if height or width parameters are empty
+            {document.getElementById("updateCtrlDim").disabled = true;}
+        else
+            {document.getElementById("updateCtrlDim").disabled = false;}
+        if ((height < 1 || height > 5000) || (width < 1 || width > 5000)) // Checks if height or width is out of range
+            {document.getElementById("updateCtrlDim").disabled = true;}
+        else
+            {document.getElementById("updateCtrlDim").disabled = false;}
+
+        for (var i = 0; i < height.length; i++) { // Checks for letters in height parameter
+            var code = height.charCodeAt(i);
+            if ((code >= 48 && code <= 57) || code==8)
+                {}
+            else
+                {document.getElementById("updateCtrlDim").disabled = true;}
+        }
+        for (var i = 0; i < width.length; i++) { // Checks for letters in width parameter
+            var code = width.charCodeAt(i);
+            if ((code >= 48 && code <= 57) || code==8)
+                {}
+            else
+                {document.getElementById("updateCtrlDim").disabled = true;}
+        }
+    }
     checkDisabled = () => {
         var height = document.getElementById("dimHeight").value
         var width = document.getElementById("dimWidth").value
@@ -826,7 +891,7 @@ class EditScreen extends Component {
                 <div className = "col s3 controlpanel">
 
                     <div className = "left-align">
-                        <h5 className = "center-align">Properties</h5>
+                        <h5 className = "center-align">Control Properties</h5>
                             {/* <div className = "">
                             <button className = "col s6" onClick = {this.duplicateControl}>Duplicate</button>
                             <button className = "col s6" onClick = {this.deleteControl}>Delete</button>
@@ -840,6 +905,33 @@ class EditScreen extends Component {
                             </input>
                         <br></br>
                         <div className = "row">
+
+
+                            <span className = "col s12">Height: &nbsp;
+                            <input type = "number" id = "ctrlHeight" 
+                                style = {{width: 50}} 
+                                onChange = {this.checkDisabledHW}
+                                placeholder = {this.state.focusedControl.height}>  
+                            </input>
+                            &nbsp;
+                            Width: &nbsp;
+                            <input type = "number" id = "ctrlWidth" 
+                                style = {{width: 50}} 
+                                onChange = {this.checkDisabledHW}
+                                placeholder = {this.state.focusedControl.width}>
+                            </input>
+                            </span>
+
+                            <br></br>
+
+                            <center>
+                                <button className = "center-align" id = "updateCtrlDim" 
+                                        onClick={this.resizeControl}>
+                                            Resize
+                                </button>
+                                
+                            </center>
+
                             <span className = "left-align">Font Size: &nbsp;
                                 <input type = "number" id = "fs"
                                         name = "font_size"

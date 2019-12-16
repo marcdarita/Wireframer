@@ -5,13 +5,13 @@
                     "owner": "The Mandalorian",
                     "ownerid": "2qilRaoHqPh2u5gHXnnMueteC1g1",
                     "timestamp": 0,
-                    "diagramheight": 450,
-                    "diagramwidth": 450,
+                    "diagramheight": "450px",
+                    "diagramwidth": "450px",
                     "controls": [
                         {
                             "control_name": "Container",
-                            "height": 300,
-                            "width": 300,
+                            "height": "300px",
+                            "width": "300px",
                             "background_color" : "#74C962",
                             "border_color" : "#000000",
                             "border_width" : 2,
@@ -24,8 +24,8 @@
                         },     
                         {
                             "control_name": "Label",
-                            "height": 50,
-                            "width": 50,
+                            "height": "50px",
+                            "width": "50px",
                             "background_color" : "#74C962",
                             "border_color" : "#000000",
                             "border_width" : 2,
@@ -38,8 +38,8 @@
                         },     
                         {
                             "control_name": "Button",
-                            "height": 50,
-                            "width": 75,
+                            "height": "50px",
+                            "width": "75px",
                             "background_color" : "#74C962",
                             "border_color" : "#8B572A",
                             "border_width" : 2,
@@ -52,8 +52,8 @@
                         },     
                         {
                             "control_name": "TextField",
-                            "height": 50,
-                            "width": 100,
+                            "height": "50px",
+                            "width": "100px",
                             "background_color" : "#74C962",
                             "border_color" : "#8B572A",
                             "border_width" : 2,
@@ -68,17 +68,17 @@
 
                 },
                 {
-                "name": "Boba Fett?",
-                "owner": "The Mandalorian",
-                "ownerid": "2qilRaoHqPh2u5gHXnnMueteC1g1",
+                "name": "Boba Fett? Version 2.0!",
+                "owner": "The Mandalorian 2.0!",
+                "ownerid": "abcdefghijklmnopqrstuvwxyz",
                 "timestamp": 0,
-                "diagramheight": 500,
-                "diagramwidth": 500,
+                "diagramheight": "500px",
+                "diagramwidth": "500px",
                 "controls": [
                     {
                         "control_name": "Container",
-                        "height": 300,
-                        "width": 300,
+                        "height": "300px",
+                        "width": "300px",
                         "background_color" : "#A5A5A5",
                         "border_color" : "#74C962",
                         "border_width" : 2,
@@ -91,8 +91,8 @@
                     },     
                     {
                         "control_name": "Label",
-                        "height": 50,
-                        "width": 100,
+                        "height": "50px",
+                        "width": "100px",
                         "background_color" : "#74C962",
                         "border_color" : "#74C962",
                         "border_width" : 2,
@@ -105,8 +105,8 @@
                     },     
                     {
                         "control_name": "Button",
-                        "height": 50,
-                        "width": 100,
+                        "height": "50px",
+                        "width": "100px",
                         "background_color" : "#74C962",
                         "border_color" : "#4A4A4A",
                         "border_width" : 2,
@@ -119,8 +119,8 @@
                     },     
                     {
                         "control_name": "TextField",
-                        "height": 50,
-                        "width": 100,
+                        "height": "50px",
+                        "width": "100px",
                         "background_color" : "#74C962",
                         "border_color" : "#4A4A4A",
                         "border_width" : 2,
@@ -132,6 +132,73 @@
                         "y_coord": -70
                     }
                 ]
+            },
+            {
+                "name": "Baby Yoda Template",
+                "owner": "The Mandalorian",
+                "ownerid": "2qilRaoHqPh2u5gHXnnMueteC1g1",
+                "timestamp": 0,
+                "diagramheight": "450px",
+                "diagramwidth": "450px",
+                "controls": [
+                    {
+                        "control_name": "Container",
+                        "height": "300px",
+                        "width": "300px",
+                        "background_color" : "#74C962",
+                        "border_color" : "#000000",
+                        "border_width" : 2,
+                        "border_radius" : 3,
+                        "text" : "Container",
+                        "font_size" : 12,
+                        "font_color": "#000000",
+                        "x_coord": 100,
+                        "y_coord": 100
+                    },     
+                    {
+                        "control_name": "Label",
+                        "height": "50px",
+                        "width": "50px",
+                        "background_color" : "#74C962",
+                        "border_color" : "#000000",
+                        "border_width" : 2,
+                        "border_radius" : 3,
+                        "text" : "Label",
+                        "font_size" : 12,
+                        "font_color": "#000000",
+                        "x_coord": 150,
+                        "y_coord": -70
+                    },     
+                    {
+                        "control_name": "Button",
+                        "height": "50px",
+                        "width": "75px",
+                        "background_color" : "#74C962",
+                        "border_color" : "#8B572A",
+                        "border_width" : 2,
+                        "border_radius" : 3,
+                        "text" : "Button",
+                        "font_size" : 12,
+                        "font_color": "#8B572A",
+                        "x_coord": 0,
+                        "y_coord": -115
+                    },     
+                    {
+                        "control_name": "TextField",
+                        "height": "50px",
+                        "width": "100px",
+                        "background_color" : "#74C962",
+                        "border_color" : "#8B572A",
+                        "border_width" : 2,
+                        "border_radius" : 3,
+                        "text" : "TextField",
+                        "font_size" : 12,
+                        "font_color": "#8B572A",
+                        "x_coord": 190,
+                        "y_coord": -50
+                    }
+                ]
+
             }
         ]
     }
